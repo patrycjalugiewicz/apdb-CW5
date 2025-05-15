@@ -5,15 +5,12 @@ namespace ClinicAPI.Models;
 
 public class PrescriptionMedicament
 {
-    [Required]
     public int IdMedicament { get; set; }
     
-    [Required]
     public int IdPrescription { get; set; }
     
     public int? Dose { get; set; }
     
-    [Required]
     [MaxLength(100)]
     public string Details { get; set; }
     

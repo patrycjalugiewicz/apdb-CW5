@@ -18,13 +18,6 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder){
         base.OnModelCreating(modelBuilder);
 
-        // Mapowanie nazw tabel do nazw używanych w bazie danych
-        modelBuilder.Entity<Doctor>().ToTable("s29205_Doctors");
-        modelBuilder.Entity<Patient>().ToTable("s29205_Patients");
-        modelBuilder.Entity<Medicament>().ToTable("s29205_Medicaments");
-        modelBuilder.Entity<Prescription>().ToTable("s29205_Prescriptions");
-        modelBuilder.Entity<PrescriptionMedicament>().ToTable("s29205_PrescriptionMedicaments");
-
         // Konfiguracja klucza złożonego
         modelBuilder.Entity<PrescriptionMedicament>()
             .HasKey(pm => new { pm.IdPrescription, pm.IdMedicament });

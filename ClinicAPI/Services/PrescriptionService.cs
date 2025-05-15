@@ -49,7 +49,14 @@ public class PrescriptionService : IPrescriptionService
             };
             
             _context.Patients.Add(patient);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new Exception("Błąd zapisu do zmiany danych", e);
+            }
         }
         
         // Sprawdź czy lekarz istnieje
@@ -87,7 +94,16 @@ public class PrescriptionService : IPrescriptionService
         };
         
         _context.Prescriptions.Add(prescription);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException e)
+        {
+            throw new Exception("Błąd zapisu do zmiany danych", e);
+        }
+ 
         
         return prescription.IdPrescription;
     }

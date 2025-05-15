@@ -22,19 +22,17 @@ public class PrescriptionService : IPrescriptionService
     
     public async Task<int> AddPrescriptionAsync(AddPrescriptionRequest request)
     {
-        // Walidacja: DueDate musi być późniejsza lub równa Date
+
         if (request.DueDate < request.Date)
         {
             throw new ArgumentException("Data ważności (DueDate) nie może być wcześniejsza niż data wystawienia recepty.");
         }
         
-        // Walidacja: Nie więcej niż 10 leków na receptę
         if (request.Medicaments.Count > 10)
         {
             throw new ArgumentException("Recepta może zawierać maksymalnie 10 leków.");
         }
         
-        // Znajdź lub dodaj pacjenta
         var patient = request.Patient.IdPatient.HasValue 
             ? await _context.Patients.FindAsync(request.Patient.IdPatient.Value)
             : null;
@@ -59,14 +57,12 @@ public class PrescriptionService : IPrescriptionService
             }
         }
         
-        // Sprawdź czy lekarz istnieje
         var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.IdDoctor == request.IdDoctor);
         if (doctor == null)
         {
             throw new ArgumentException($"Lekarz o ID={request.IdDoctor} nie istnieje.");
         }
         
-        // Sprawdź czy wszystkie leki istnieją
         var medicamentIds = request.Medicaments.Select(m => m.IdMedicament).ToList();
         var existingMedicaments = await _context.Medicaments
             .Where(m => medicamentIds.Contains(m.IdMedicament))
@@ -78,7 +74,6 @@ public class PrescriptionService : IPrescriptionService
             throw new ArgumentException("Jeden lub więcej leków nie istnieje w bazie danych.");
         }
         
-        // Dodaj receptę
         var prescription = new Prescription
         {
             Date = request.Date,

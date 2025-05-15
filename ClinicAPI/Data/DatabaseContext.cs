@@ -18,11 +18,11 @@ public class DatabaseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder){
         base.OnModelCreating(modelBuilder);
 
-        // Konfiguracja klucza złożonego
+    
         modelBuilder.Entity<PrescriptionMedicament>()
             .HasKey(pm => new { pm.IdPrescription, pm.IdMedicament });
 
-     // Konfiguracja relacji
+
         modelBuilder.Entity<Prescription>()
             .HasOne(p => p.Patient)
             .WithMany(p => p.Prescriptions)
@@ -47,7 +47,7 @@ public class DatabaseContext : DbContext
             .HasForeignKey(pm => pm.IdPrescription)
             .OnDelete(DeleteBehavior.Restrict);
 
-    // Dane początkowe (seed data)
+
         modelBuilder.Entity<Doctor>().HasData(new List<Doctor>
         {
             new Doctor { IdDoctor = 1, FirstName = "Jan", LastName = "Kowalski", Email = "jan.kowalski@clinic.pl" },
@@ -55,7 +55,7 @@ public class DatabaseContext : DbContext
             new Doctor { IdDoctor = 3, FirstName = "Piotr", LastName = "Wiśniewski", Email = "piotr.wisniewski@clinic.pl" }
         });
     
-    // Pacjenci
+
         modelBuilder.Entity<Patient>().HasData(new List<Patient>
         {
             new Patient { IdPatient = 1, FirstName = "Adam", LastName = "Mickiewicz", Birthdate = new DateTime(1990, 5, 15) },
@@ -63,7 +63,7 @@ public class DatabaseContext : DbContext
             new Patient { IdPatient = 3, FirstName = "Maria", LastName = "Dąbrowska", Birthdate = new DateTime(2000, 2, 28) }
         });
     
-    // Leki
+
         modelBuilder.Entity<Medicament>().HasData(new List<Medicament>
         {
             new Medicament { IdMedicament = 1, Name = "Apap", Description = "Przeciwbólowy", Type = "Tabletki" },
